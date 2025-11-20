@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredient Management - Recipe Kit</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Recipe Kit">
+    <meta name="description" content="A tool for managing recipes and generating shopping lists">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recipe Kit</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/ingredients.html">Ingredients</a>
+                <a href="/recipes.html">Recipes</a>
+                <a href="/shopping.html">Shopping Lists</a>
+            </nav>
+        </header>
+        
+        <main>
+            <h2>Ingredient Management</h2>
+            <p>View configured ingredients with their conversion rules and size estimation. To add a new ingredient, contact the administrator.</p>
+            
+            <div id="alert" class="alert" style="display: none;"></div>
+            
+            <div class="container">
+                <div class="column" style="max-width: 100%;">
+                    <h3>Ingredients</h3>
+                    <div id="ingredients-list" class="ingredients-list"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/ingredients.js"></script>
+    
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Kit - Shopping List Generator</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Recipe Kit">
+    <meta name="description" content="A tool for managing recipes and generating shopping lists">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recipe Kit</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/ingredients.html">Ingredients</a>
+                <a href="/recipes.html">Recipes</a>
+                <a href="/shopping.html">Shopping Lists</a>
+            </nav>
+        </header>
+        
+        <main>
+            <h2>Welcome to Recipe Kit</h2>
+            <p>A tool for managing recipes and generating shopping lists.</p>
+            
+            <div class="cards">
+                <div class="card">
+                    <h3>Manage Ingredients</h3>
+                    <p>Configure ingredients with conversion rules and size estimation.</p>
+                    <a href="/ingredients.html" class="btn">Go to Ingredients</a>
+                </div>
+                
+                <div class="card">
+                    <h3>Manage Recipes</h3>
+                    <p>Create and edit recipes with ingredients and sub-recipes.</p>
+                    <a href="/recipes.html" class="btn">Go to Recipes</a>
+                </div>
+                
+                <div class="card">
+                    <h3>Generate Shopping Lists</h3>
+                    <p>Select recipes and generate aggregated shopping lists.</p>
+                    <a href="/shopping.html" class="btn">Go to Shopping Lists</a>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
+

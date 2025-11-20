@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List Generator - Recipe Kit</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Recipe Kit">
+    <meta name="description" content="A tool for managing recipes and generating shopping lists">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recipe Kit</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/ingredients.html">Ingredients</a>
+                <a href="/recipes.html">Recipes</a>
+                <a href="/shopping.html">Shopping Lists</a>
+            </nav>
+        </header>
+        
+        <main>
+            <h2>Shopping List Generator</h2>
+            <p>Select recipes and number of batches to generate an aggregated shopping list.</p>
+            
+            <div id="alert" class="alert" style="display: none;"></div>
+            
+            <div class="two-column">
+                <div class="column">
+                    <h3>Selected Recipes</h3>
+                    <div class="search-container" style="margin-bottom: 20px;">
+                        <input type="text" id="recipe-search" class="search-input" placeholder="Search by recipe name or ingredients..." autocomplete="off">
+                        <span class="search-icon">🔍</span>
+                        <div id="recipe-dropdown" class="recipe-dropdown" style="display: none;"></div>
+                    </div>
+                    
+                    <div id="selected-recipes-list" class="selected-recipes-list">
+                        <p style="color: #666; font-style: italic;">No recipes selected yet. Search above to add recipes.</p>
+                    </div>
+                    
+                    <button id="generate-btn" class="btn-primary" style="margin-top: 20px; width: 100%;">Generate Shopping List</button>
+                </div>
+                
+                <div class="column">
+                    <h3 style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">Shopping List <button id="clear-list-btn" class="btn-secondary" style="font-size: 12px; padding: 6px 10px;">Clear</button></h3>
+                    <div id="shopping-list" class="shopping-list">
+                        <p>Select recipes and click "Generate Shopping List" to create your list.</p>
+                    </div>
+                    
+                    <div class="copyable-text-section" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <h4 style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                            Copyable Text
+                            <button id="copy-text-btn" class="btn-secondary" style="font-size: 12px; padding: 6px 10px;" disabled>Copy</button>
+                        </h4>
+                        <textarea id="formatted-text" readonly style="width: 100%; min-height: 200px; padding: 10px; font-family: monospace; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; background-color: #f9f9f9;" placeholder="Generate a shopping list to see the formatted text here..."></textarea>
+                    </div>
+                    
+                    <div class="history-section" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <h4>Shopping List History</h4>
+                        <div id="snapshots-container">
+                            <p style="color: #666;">No snapshots yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/shopping.js"></script>
+    
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

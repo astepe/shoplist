@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Management - Recipe Kit</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Recipe Kit">
+    <meta name="description" content="A tool for managing recipes and generating shopping lists">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Icons -->
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recipe Kit</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/ingredients.html">Ingredients</a>
+                <a href="/recipes.html">Recipes</a>
+                <a href="/shopping.html">Shopping Lists</a>
+            </nav>
+        </header>
+        
+        <main>
+            <h2>Recipe Management</h2>
+            <p>Create and edit recipes with ingredients and sub-recipes.</p>
+            
+            <div id="alert" class="alert" style="display: none;"></div>
+            
+            <!-- Quick Add Recipe Section -->
+            <div class="quick-add-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; color: white; font-size: 24px;">✨ Quick Add Recipe</h3>
+                <p style="margin-bottom: 20px; opacity: 0.95;">Start here to quickly add a new recipe. Fill in the basics and add ingredients as you go.</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: end;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Recipe Name *</label>
+                        <input type="text" id="quick-recipe-name" placeholder="e.g., Vegetable Stir Fry" style="width: 100%; padding: 10px; border-radius: 6px; border: none; font-size: 14px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Serves</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="number" id="quick-yield-quantity" placeholder="4" step="0.01" style="flex: 1; padding: 10px; border-radius: 6px; border: none; font-size: 14px;">
+                            <select id="quick-yield-unit" style="flex: 1; padding: 10px; border-radius: 6px; border: none; font-size: 14px; background: white;"></select>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-weight: 500;">Page Number (optional)</label>
+                        <input type="number" id="quick-page-number" placeholder="123" style="width: 100%; padding: 10px; border-radius: 6px; border: none; font-size: 14px;">
+                    </div>
+                    <button id="quick-start-btn" class="btn-primary" style="padding: 10px 25px; font-size: 16px; font-weight: 600; white-space: nowrap; background: white; color: #667eea; border: none; border-radius: 6px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Start Adding Recipe</button>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="column">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0;">Existing Recipes</h3>
+                        <button id="show-form-btn" class="btn btn-secondary" onclick="toggleRecipeForm()" style="display: none;">Show Full Form</button>
+                    </div>
+                    <div class="search-container" style="margin-bottom: 20px;">
+                        <input type="text" id="recipe-search" class="search-input" placeholder="Search recipes by name..." oninput="filterRecipes()">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="search-container" style="margin-bottom: 20px;">
+                        <input type="text" id="ingredient-search" class="search-input" placeholder="Search by ingredients (e.g., tomato, onion, garlic)..." oninput="searchByIngredients()">
+                        <span class="search-icon">🥕</span>
+                    </div>
+                    <div id="recipes-list" class="recipes-list"></div>
+                </div>
+                
+                <div class="column" id="recipe-form-column" style="display: block;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin: 0;">Recipe Details</h3>
+                        <button id="hide-form-btn" class="btn btn-secondary" onclick="toggleRecipeForm()">Hide Form</button>
+                    </div>
+                    <button id="cancel-edit-btn" class="btn btn-secondary" style="display: none; margin-bottom: 10px;" onclick="cancelEdit()">Cancel Edit</button>
+                    <form id="recipe-form" style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 2px solid #e0e0e0;">
+                        <div style="background: #e8f4f8; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #3498db;">
+                            <strong style="color: #2c3e50;">💡 Tip:</strong> 
+                            <span style="color: #555;">Fill in the recipe name and yield above, then add ingredients one by one below. You can add as many ingredients as needed.</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recipe-name">Recipe Name *</label>
+                            <input type="text" id="recipe-name" required placeholder="e.g., Vegetable Stir Fry" style="font-size: 16px; padding: 12px;">
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label for="yield-quantity">Recipe Yield (Quantity) *</label>
+                                <input type="number" step="0.01" id="yield-quantity" required placeholder="e.g., 4" style="font-size: 16px; padding: 12px;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="yield-unit-select">Recipe Yield (Unit) *</label>
+                                <select id="yield-unit-select" required style="font-size: 16px; padding: 12px;"></select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recipe-page-number">Page Number (optional)</label>
+                            <input type="number" id="recipe-page-number" placeholder="e.g., 123" style="font-size: 16px; padding: 12px;">
+                            <small>If this recipe is from a cookbook, enter the page number for reference.</small>
+                        </div>
+                        
+                        <div class="form-group" style="background: #fff3cd; padding: 12px; border-radius: 6px; border-left: 4px solid #ffc107;">
+                            <label>
+                                <input type="checkbox" id="is-sub-recipe"> 
+                                <strong>This recipe can be used as a sub-recipe ingredient</strong>
+                            </label>
+                            <small style="display: block; margin-top: 5px; color: #856404;">If checked, this recipe can be added as an ingredient to other recipes. Yield must be in standard units (not "servings").</small>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 30px;">
+                            <h4 style="margin-bottom: 15px; color: #2c3e50; font-size: 18px;">📝 Recipe Ingredients</h4>
+                            <div id="recipe-items-list" style="min-height: 50px; margin-bottom: 20px; padding: 15px; background: white; border-radius: 6px; border: 1px dashed #ddd;">
+                                <p style="color: #999; font-style: italic; margin: 0;">No ingredients added yet. Add your first ingredient below.</p>
+                            </div>
+                            
+                            <div class="item-form" style="background: white; padding: 20px; border-radius: 8px; border: 2px solid #3498db;">
+                                <h5 style="margin-bottom: 15px; color: #2c3e50;">➕ Add New Ingredient or Sub-Recipe</h5>
+                                <label>Item Type:</label>
+                                <select id="item-type-toggle">
+                                    <option value="ingredient">Ingredient</option>
+                                    <option value="sub_recipe">Sub-Recipe</option>
+                                </select>
+                                
+                                <div id="ingredient-item-section">
+                                    <label for="ingredient-select">Ingredient:</label>
+                                    <select id="ingredient-select"></select>
+                                </div>
+                                
+                                <div id="sub-recipe-item-section" style="display: none;">
+                                    <label for="sub-recipe-select">Sub-Recipe:</label>
+                                    <select id="sub-recipe-select"></select>
+                                </div>
+                                
+                                <label for="item-quantity">Quantity:</label>
+                                <input type="number" step="0.01" id="item-quantity">
+                                
+                                <label for="item-unit-select">Unit:</label>
+                                <select id="item-unit-select"></select>
+                                
+                                <label for="item-size-qualifier">Size Qualifier (optional):</label>
+                                <select id="item-size-qualifier">
+                                    <option value="">None</option>
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                                
+                                <label for="item-preparation-notes">Preparation Notes (optional):</label>
+                                <input type="text" id="item-preparation-notes" placeholder="e.g., chopped, diced">
+                                
+                                <button type="button" id="add-item-btn" class="btn btn-secondary">Add Item</button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary" style="margin-top: 20px; padding: 15px 30px; font-size: 16px; font-weight: 600; width: 100%;">✅ Save Recipe</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script src="js/recipes.js"></script>
+    
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
