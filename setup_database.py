@@ -122,7 +122,7 @@ def determine_ingredient_type(ingredient_name):
 def main():
     """Main function to load all default ingredients."""
     print("=" * 60)
-    print("Setting up Recipe Kit Database")
+    print("Setting up ShopList Database")
     print("=" * 60)
     
     # Step 1: Initialize database schema

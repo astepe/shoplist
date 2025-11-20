@@ -1,5 +1,5 @@
 /**
- * API client for Recipe Kit backend
+ * API client for ShopList backend
  */
 
 const API_BASE = '';

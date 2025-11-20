@@ -1,4 +1,4 @@
-// Service Worker for Recipe Kit PWA
+// Service Worker for ShopList PWA
 const CACHE_NAME = 'recipe-kit-v1';
 const urlsToCache = [
   '/',

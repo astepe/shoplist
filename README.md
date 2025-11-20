@@ -1,4 +1,4 @@
-# Recipe Kit - Shopping List Generator
+# ShopList
 
 A web application for managing recipes and generating aggregated shopping lists with intelligent unit conversion. Perfect for meal planning and grocery shopping!
 
@@ -30,7 +30,7 @@ A web application for managing recipes and generating aggregated shopping lists 
 
 ```bash
 git clone <repository-url>
-cd recipekit
+cd shoplist
 ```
 
 ### 2. Install Dependencies
@@ -133,7 +133,7 @@ See `IPAD_SETUP.md` for detailed instructions.
 ## Project Structure
 
 ```
-recipekit/
+shoplist/
 ├── app.py                      # Flask application entry point
 ├── setup_database.py           # Database setup script (loads default ingredients)
 ├── requirements.txt            # Python dependencies

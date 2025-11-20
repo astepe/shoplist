@@ -1,6 +1,6 @@
 {
-  "name": "Recipe Kit",
-  "short_name": "Recipe Kit",
+  "name": "ShopList",
+  "short_name": "ShopList",
   "description": "A tool for managing recipes and generating shopping lists",
   "start_url": "/",
   "display": "standalone",
